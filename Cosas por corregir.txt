@@ -1,3 +1,30 @@
-1.- Error cuando hay varias operaciones seguidas del mismo nivel
+1.- Error cuando hay varias operaciones seguidas del mismo nivel (corregido)
+	ya que cundo son del mismo nivel, no importa el orden en el que relice esas operciones, hacerlas corridas formaría un único token, en otras palabras, la generación de tokens solo sirve para darle seguimiento al orden de atención, cosa que no importa al momento de resolver operaciones del mismo nivel
+	Ejemplo: resolver 2*3*4/4
+	Ya que la multiplicación y la división tienen el mismo orden de importancia, se resolverían de izquierda a derecha, es decir, el resultado sería 6.
+	Si se quisiera que alguna parte se resolviera primero (por ejemplo, indicar que todas las multiplicaciones se hicieran primero y el resultado dividirlo), lo correcto sería poner paréntesis para que se respete ese orden de atención.
+	De todos modos, eso no cambia el resultado, por la ley de "El orden de los factores no altera el producto", lo cual aplica para "sumas y restas" y "multiplicaciones y divisiones" seguidas.
+	En resumen, al tener cualquiera de esos casos de mismo nivel seguidos, da igual cómo se resuelva, el resultado será el mismo, por lo que solo amerita la creación de un token y no de uno por cada multiplicación/división o suma/resta
+	(Lo mismo sucede si tuviese: 5 + 2 + 4 - 1 + 5; no importa si adición atienda primero, como son todas del mismo nivel, el resultado siempre será 15)
 
-2.- Error al eliminar los paréntesis de la cadena original para poder evaluar lo demás, por lo que errores como t2 = ") + (" son bastante comunes
+
+2.- Error al eliminar los paréntesis de la cadena original para poder evaluar lo demás, por lo que errores como t2 = ") + (" son bastante comunes (corregido)
+	Se encontró que solo se tiene el problema al analizar la cadena que se contiene entre los paréntesis, ésto llama a la misma función por recursividad.
+	Se notó que todos los datos almacenados en los arreglos de esas llamadas recursivas, no modificaban nada de las cadenas originales de la función anterior que las llamó
+	Se optó por crear variables externas a la función para que, al ser modificadas, los cambios se mantuvieran; justo después de regresar de la recursividad, con los tokens obtenidos y con los respaldos de los cambios, se eliminan los paréntesis con lo que tengan dentro y se sustituye por el token correspondiente
+	
+	Al salir de la zona que evalúa paréntesis (Que es la que tiene recursividad), la cadena quedará con solo multiplicaciones, divisiones, sumas y/o restas. Sin ningún paréntesis
+	Eso nos lleva al error corregido anteriormente.
+
+3.- Error en la sustitución de tokens PENDIENTE
+	Cuando se tiene un ejemplo como el siguiente:
+	(2+3)*(3/3 + 2)
+
+	El programa arrojará elsiguiente resultado:
+
+	t0 = 2+3
+	t1 = 3/3 
+	t2 = t1+ 2 
+	t3 = t0*t1 <- justo en t1 está el error, debería ser t2, porque t2 contiene a la división y a la suma juntas, t1 solo contiene a la multiplicación
+
+	Cabe destacar que como no se están realizando las operaciones, no afecta mucho, solo está sustituyendo por el token equivocado
