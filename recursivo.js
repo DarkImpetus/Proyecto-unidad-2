@@ -49,7 +49,7 @@ function JerarquiaRecursiva(texto){
     var pushear = [];
        if(texto != null){ //Si la cadena no es nula, empieza el analisis
            
-            if(texto.match(generalparentesis) != null){ //Si encuentra un grupo con parentesis
+            while(texto.match(generalparentesis) != null){ //Si encuentra un grupo con parentesis
                var parentesis = texto.match(generalparentesis) //Almacena todos los resultados,incluso los que tengan más parentesis internos
                //Éstos parentesis internos NO los cuenta como otros resutados hasta que sean depurados los que los contienen
                console.log(parentesis.length);
@@ -61,8 +61,6 @@ function JerarquiaRecursiva(texto){
                    parentesis[p] = parentesis[p].replace('(', ''); //El primer
                    parentesis[p] = parentesis[p].replace(')', ''); //Y ultimo parentesis
 
-                   
-                   
                    console.log("Este es parentesis:");
                    console.log(parentesis);
                    console.log("este es parentesis[p]");
@@ -80,16 +78,22 @@ function JerarquiaRecursiva(texto){
                    var cuantos = tokens.length - 1;
                    console.log(cuantos);
                    pp = tokens[cuantos];
+                   var porsi = pp.length - 1;
                    console.log("pp = ");
                    console.log(pp);
-                   pp = pp[0].match(/["t"][0-9]+/);
+                   console.log("porsi = ");
+                   console.log(porsi);
+                   console.log("pp[porsi]=")
+                   console.log(pp[porsi]);
+                   pp = pp[porsi].match(/["t"][0-9]+/);
                    console.log("Valor de pp despues del match:")
                    console.log(pp);
                    texto = texto.replace(respaldo, pp ); // y mando esa cadena a analizar hasta acabar con los paréntesis
                    console.log("Éste es el resultado sustituido:");
                    console.log(texto);
                    
-               } ;  
+               } ;
+               parentesis = texto.match(generalparentesis); 
             };
 
            
